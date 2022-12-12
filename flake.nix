@@ -16,47 +16,47 @@
   };
 
   outputs = inputs @ { self, nixpkgs, home-manager, impermanence, emacs-overlay, darwin, ... }:
-  let
-    lib = nixpkgs.lib.extend (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
+    let
+      lib = nixpkgs.lib.extend (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
 
-    genPkgs = system: import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
+      genPkgs = system: import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
+      overlays = [
+        emacs-overlay.overlay
+      ];
+
+      genPkgsWithOverlays = system: import nixpkgs {
+        inherit system overlays;
+        config.allowUnfree = true;
+      };
+
+      hmConfig = { hm, pkgs, inputs, config, ... }: {
+        imports = (lib.my.mapModulesRec' ./hm-imports (x: x)) ++ [ "${impermanence}/home-manager.nix" ];
+      };
+
+      darwinSystem = system: extraModules: hostName:
+        let pkgs = genPkgsWithOverlays system;
+        in
+        darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = { inherit lib pkgs inputs self darwin; };
+          modules = (lib.my.mapModulesRec' (toString ./modules) (m: attrs: import m (attrs // { username = "ben"; }))) ++ [
+            ./darwin-common.nix
+            home-manager.darwinModules.home-manager
+            {
+              networking.hostName = hostName;
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit inputs; username = "ben"; };
+              home-manager.users.ben = hmConfig;
+            }
+          ] ++ extraModules;
+        };
+    in
+    {
+      darwinConfigurations."laptop2" = darwinSystem "aarch64-darwin" [ ./hosts/laptop2/default.nix ] "laptop2";
     };
-
-    overlays = [
-      emacs-overlay.overlay
-    ];
-
-    genPkgsWithOverlays = system: import nixpkgs {
-      inherit system overlays;
-      config.allowUnfree = true;
-    };
-
-    hmConfig = { hm, pkgs, inputs, config, ... }: {
-      imports = (lib.my.mapModulesRec' ./hm-imports (x: x)) ++ [ "${impermanence}/home-manager.nix" ];
-    };
-
-    darwinSystem = system: extraModules: hostName:
-      let pkgs = genPkgsWithOverlays system;
-      in
-	darwin.lib.darwinSystem {
-	  inherit system;
-	  specialArgs = { inherit lib pkgs inputs self darwin; };
-          modules = (lib.my.mapModulesRec' (toString ./modules) (m: attrs: import m (attrs // { username = "ben"; }))) ++ [ 
-	   ./darwin-common.nix
-	   home-manager.darwinModules.home-manager
-	   {
-	     networking.hostName = hostName;
-	     home-manager.useGlobalPkgs = true;
-       home-manager.useUserPackages = true;
-	     home-manager.extraSpecialArgs = { inherit inputs; username = "ben"; };
-	     home-manager.users.ben = hmConfig;
-	   }
-	  ] ++ extraModules;
-	};
-  in
-  {
-    darwinConfigurations."laptop2" = darwinSystem "aarch64-darwin" [ ./hosts/laptop2/default.nix ] "laptop2";
-  };
 }

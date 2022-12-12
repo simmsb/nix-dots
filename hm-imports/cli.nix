@@ -5,29 +5,29 @@
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-      cachix
-      nixpkgs-fmt
-      update-nix-fetchgit
-      just
-      assh
-      fish
-      jq
-      htop
-      exa
-      curl
-      fd
-      file
-      fzf
-      git
-      neofetch
-      ripgrep
-      direnv 
-      unzip
-      pv
-      killall
-      yt-dlp
-      aria2
-      libqalculate
+    cachix
+    nixpkgs-fmt
+    update-nix-fetchgit
+    just
+    assh
+    fish
+    jq
+    htop
+    exa
+    curl
+    fd
+    file
+    fzf
+    git
+    neofetch
+    ripgrep
+    direnv
+    unzip
+    pv
+    killall
+    yt-dlp
+    aria2
+    libqalculate
   ];
   programs = {
     gpg = {
@@ -48,27 +48,27 @@
         user.email = "ben@bensimms.moe";
         user.signingKey = "3C3A2E1E088D295B";
 
-	      color.ui = true;
-	      core = {
-	        editor = "nvim";
-	        autocrlf = "input";
-	      };
+        color.ui = true;
+        core = {
+          editor = "nvim";
+          autocrlf = "input";
+        };
 
         alias = {
           lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'";
           pushall = "!git remote | xargs -L1 git push --all";
           prunemerged = "git branch --merged | egrep -v \"(^\\*|master|dev)\" | xargs git branch -d";
-	      };
+        };
 
-	      pull = {
+        pull = {
           rebase = true;
-	        twohead = "ort";
-	      };
+          twohead = "ort";
+        };
 
-	      rebase.autostash = "true";
+        rebase.autostash = "true";
       };
     };
-# Htop configurations
+    # Htop configurations
     htop = {
       enable = true;
       settings = {

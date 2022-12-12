@@ -4,9 +4,9 @@ let
     (epkgs: [ epkgs.emacsql-sqlite epkgs.vterm epkgs.pdf-tools ]);
 in
 {
-  environment.systemPackages = [ 
+  environment.systemPackages = [
     pkgs.neovim
-    pkgs.tailscale 
+    pkgs.tailscale
     my-emacs
     pkgs.libgccjit
     pkgs.gcc
@@ -30,7 +30,7 @@ in
 
   homebrew = {
     enable = true;
-    
+
     global = {
       autoUpdate = false;
       brewfile = true;
@@ -41,8 +41,8 @@ in
       upgrade = true;
     };
 
-    brews = [];
-  
+    brews = [ ];
+
     casks = [
       "telegram-desktop"
       "discord"
@@ -55,14 +55,14 @@ in
   };
 
   home-manager.users.ben = { pkgs, lib, inputs, config, ... }: {
-    home.username = "ben"; 
+    home.username = "ben";
     astronvim.enable = true;
 
     disabledModules = [ "targets/darwin/linkapps.nix" ];
 
     programs.fish = {
       enable = true;
-      
+
       shellInit = ''
         set -gx ATUIN_NOBIND "true";
       '';
