@@ -55,11 +55,13 @@ in
       upgrade = true;
     };
 
-    brews = [ ];
+    brews = [ 
+    ];
 
     casks = [
       "telegram-desktop"
       "discord"
+      "eul"
     ];
 
     taps = [
@@ -78,7 +80,10 @@ in
       enable = true;
 
       shellInit = ''
-        set -gx ATUIN_NOBIND "true";
+        set -gx ATUIN_NOBIND "true"
+        if test (uname) = Darwin
+          fish_add_path --prepend --global "$HOME/.nix-profile/bin" "/etc/profiles/per-user/$USER/bin" /nix/var/nix/profiles/default/bin /run/current-system/sw/bin
+        end
       '';
 
       interactiveShellInit = ''
@@ -188,6 +193,10 @@ in
         sync_address = "http://100.82.95.116:8888";
         search_mode = "fulltext";
       };
+    };
+
+    programs.password-store = {
+      enable = true;
     };
   };
 }
