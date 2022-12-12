@@ -62,8 +62,9 @@ in
     casks = [
       "telegram-desktop"
       "discord"
-      "eul"
+      "stats"
       "maccy"
+      "alt-tab"
     ];
 
     taps = [
@@ -80,6 +81,17 @@ in
 
     programs.fish = {
       enable = true;
+
+      functions = {
+        assh_ts = ''
+          begin
+                echo 'hosts:'
+                tailscale status --json | jq -r '.Peer[] | ("  " + (.DNSName | split("."))[0] + ":\n    hostname: " + .TailscaleIPs[0] + "\n    user: root\n")'
+          end > ~/.ssh/assh-ts.yml
+          assh config build > ~/.ssh/config
+          echo "done!"
+        '';
+      };
 
       shellInit = ''
         set -gx ATUIN_NOBIND "true"

@@ -28,6 +28,7 @@
     yt-dlp
     aria2
     libqalculate
+    rsync
   ];
   programs = {
     gpg = {
