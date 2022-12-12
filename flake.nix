@@ -13,9 +13,12 @@
 
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
+
+    fenix.url = "github:nix-community/fenix";
+    fenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, impermanence, emacs-overlay, darwin, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, impermanence, emacs-overlay, darwin, fenix, ... }:
     let
       lib = nixpkgs.lib.extend (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
 
@@ -26,6 +29,7 @@
 
       overlays = [
         emacs-overlay.overlay
+        fenix.overlays.default
       ];
 
       genPkgsWithOverlays = system: import nixpkgs {

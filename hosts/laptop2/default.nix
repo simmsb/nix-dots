@@ -2,14 +2,28 @@
 let
   my-emacs = (pkgs.emacsPackagesFor pkgs.emacsUnstable).withPackages
     (epkgs: [ epkgs.emacsql-sqlite epkgs.vterm epkgs.pdf-tools ]);
+  rust = pkgs.fenix.complete.withComponents [
+    "cargo"
+    "clippy"
+    "rust-src"
+    "rustc"
+    "rustfmt"
+  ];
 in
 {
-  environment.systemPackages = [
-    pkgs.neovim
-    pkgs.tailscale
+  environment.systemPackages = with pkgs; [
+    neovim
+    tailscale
     my-emacs
-    pkgs.libgccjit
-    pkgs.gcc
+    libgccjit
+    llvmPackages_latest.llvm
+    llvmPackages_latest.lld
+    llvmPackages_latest.bintools
+    zlib.out
+    qemu
+    python3
+    rust
+    rust-analyzer-nightly
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
