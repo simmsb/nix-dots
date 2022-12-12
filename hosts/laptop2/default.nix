@@ -9,6 +9,7 @@ let
     "rustc"
     "rustfmt"
   ];
+  python = pkgs.python3.withPackages (ppkgs: with ppkgs; [ pipx ]);
 in
 {
   environment.systemPackages = with pkgs; [
@@ -21,7 +22,7 @@ in
     llvmPackages_latest.bintools
     zlib.out
     qemu
-    python3
+    python
     rust
     rust-analyzer-nightly
   ];
@@ -62,6 +63,7 @@ in
       "telegram-desktop"
       "discord"
       "eul"
+      "maccy"
     ];
 
     taps = [
@@ -84,6 +86,7 @@ in
         if test (uname) = Darwin
           fish_add_path --prepend --global "$HOME/.nix-profile/bin" "/etc/profiles/per-user/$USER/bin" /nix/var/nix/profiles/default/bin /run/current-system/sw/bin
         end
+        fish_add_path --global "$HOME/.local/bin" 
       '';
 
       interactiveShellInit = ''
