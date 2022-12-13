@@ -29,6 +29,7 @@
     aria2
     libqalculate
     rsync
+    perl
   ];
   programs = {
     gpg = {
@@ -53,6 +54,7 @@
         core = {
           editor = "nvim";
           autocrlf = "input";
+          excludesfile = "~/.gitignore";
         };
 
         alias = {

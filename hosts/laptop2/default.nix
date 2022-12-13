@@ -20,9 +20,16 @@ in
     llvmPackages_latest.llvm
     llvmPackages_latest.lld
     llvmPackages_latest.bintools
+
+    coreutils
+    findutils
+    gnugrep
+    gnused
+
     zlib.out
     qemu
     python
+
     rust
     rust-analyzer-nightly
   ];
@@ -85,6 +92,9 @@ in
     astronvim.enable = true;
 
     disabledModules = [ "targets/darwin/linkapps.nix" ];
+
+    # home.packages = with pkgs; [
+    # ];
 
     programs.fish = {
       enable = true;
