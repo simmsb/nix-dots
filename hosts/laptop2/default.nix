@@ -43,6 +43,13 @@ in
     home = "/Users/ben";
   };
 
+  fonts.fontDir.enable = true;
+  fonts.fonts = [
+    (pkgs.nerdfonts.override {
+      fonts = [ "FiraCode" "FantasqueSansMono" ];
+    })
+  ];
+
   homebrew = {
     enable = true;
 
@@ -159,10 +166,21 @@ in
           padding = { x = 10; y = 10; };
           decorations = "buttonless";
         };
+        font = {
+          normal.family = "FantasqueSansMono Nerd Font";
+          size = 15;
+        };
         shell = {
           program = "${pkgs.fish}/bin/fish";
           args = [ "--login" ];
         };
+        key_bindings = [
+          {
+            key = "Key3";
+            mods = "Alt";
+            chars = "#";
+          }
+        ];
       };
     };
 
