@@ -13,6 +13,8 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
+    nix-index
+
     neovim
     tailscale
     my-emacs
@@ -32,6 +34,11 @@ in
 
     rust
     rust-analyzer-nightly
+
+    cargo-outdated
+
+    nmap
+    du-dust
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -71,7 +78,11 @@ in
     };
 
     brews = [ 
+      "urh"
+      "inspectrum"
     ];
+
+    caskArgs.no_quarantine = true;
 
     casks = [
       "telegram-desktop"
@@ -79,6 +90,17 @@ in
       "stats"
       "maccy"
       "alt-tab"
+      "gqrx"
+      "zulu17" # java
+      "prismlauncher"
+      "raycast"
+      "shottr"
+      "iina"
+      "reflex"
+      "spotify"
+      "hiddenbar"
+      "steam"
+      "rectangle"
     ];
 
     taps = [
