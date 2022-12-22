@@ -30,6 +30,8 @@
     libqalculate
     rsync
     perl
+    netcat
+    openssh
   ];
   programs = {
     gpg = {

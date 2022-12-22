@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  my-emacs = (pkgs.emacsPackagesFor pkgs.emacsUnstable).withPackages
+  my-emacs = (pkgs.emacsPackagesFor pkgs.emacsGit).withPackages
     (epkgs: [ epkgs.emacsql-sqlite epkgs.vterm epkgs.pdf-tools ]);
   rust = pkgs.fenix.complete.withComponents [
     "cargo"
@@ -33,12 +33,10 @@ in
     python
 
     rust
-    rust-analyzer-nightly
 
-    cargo-outdated
+    gradle
 
-    nmap
-    du-dust
+    mold
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -85,7 +83,6 @@ in
     caskArgs.no_quarantine = true;
 
     casks = [
-      "telegram-desktop"
       "discord"
       "stats"
       "maccy"
@@ -101,6 +98,7 @@ in
       "hiddenbar"
       "steam"
       "rectangle"
+      "ghidra"
     ];
 
     taps = [
@@ -115,8 +113,25 @@ in
 
     disabledModules = [ "targets/darwin/linkapps.nix" ];
 
-    # home.packages = with pkgs; [
-    # ];
+    home.packages = with pkgs; [
+      cargo-outdated
+
+      nmap
+      du-dust
+
+      rust-analyzer-nightly
+
+      poetry
+    ];
+
+    programs.neovim = {
+      enable = true;
+      viAlias = true;
+      vimAlias = true;
+      vimdiffAlias = true;
+      withPython3 = true;
+      extraPackages = with pkgs; [ tree-sitter nodejs ripgrep fd unzip ];
+    };
 
     programs.fish = {
       enable = true;

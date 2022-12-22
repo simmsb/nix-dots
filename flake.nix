@@ -9,6 +9,7 @@
     impermanence.url = "github:nix-community/impermanence";
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+    # emacs-overlay.url = "github:ericdallo/emacs-overlay?rev=00cdfbd36d40d529003d521ab32ca570dfcd453e";
     emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     darwin.url = "github:lnl7/nix-darwin";
