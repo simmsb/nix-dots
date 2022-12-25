@@ -2,14 +2,7 @@
 let
   my-emacs = (pkgs.emacsPackagesFor pkgs.emacsGit).withPackages
     (epkgs: [ epkgs.emacsql-sqlite epkgs.vterm epkgs.pdf-tools ]);
-  rust = pkgs.fenix.complete.withComponents [
-    "cargo"
-    "clippy"
-    "rust-src"
-    "rustc"
-    "rustfmt"
-  ];
-  python = pkgs.python3.withPackages (ppkgs: with ppkgs; [ pipx ]);
+  python = pkgs.python3.withPackages (ppkgs: with ppkgs; [ pipx pip virtualenv ]);
 in
 {
   environment.systemPackages = with pkgs; [
@@ -32,11 +25,13 @@ in
     qemu
     python
 
-    rust
-
     gradle
 
     mold
+
+    gnuradio
+    hackrf
+    p7zip
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -99,6 +94,8 @@ in
       "steam"
       "rectangle"
       "ghidra"
+      "remoteviewer"
+      "sigdigger"
     ];
 
     taps = [
@@ -115,13 +112,24 @@ in
 
     home.packages = with pkgs; [
       cargo-outdated
+      cargo-edit
+      cargo-expand
+      cargo-generate
+      cargo-espflash
 
       nmap
       du-dust
 
+      rustup
       rust-analyzer-nightly
 
       poetry
+
+      tokei
+
+      binwalk
+      
+      nil
     ];
 
     programs.neovim = {
@@ -150,7 +158,7 @@ in
       shellInit = ''
         set -gx ATUIN_NOBIND "true"
         if test (uname) = Darwin
-          fish_add_path --prepend --global "$HOME/.nix-profile/bin" "/etc/profiles/per-user/$USER/bin" /nix/var/nix/profiles/default/bin /run/current-system/sw/bin
+          fish_add_path --prepend --global "$HOME/.cargo/bin" "$HOME/.nix-profile/bin" "/etc/profiles/per-user/$USER/bin" /nix/var/nix/profiles/default/bin /run/current-system/sw/bin
         end
         fish_add_path --global "$HOME/.local/bin" 
       '';

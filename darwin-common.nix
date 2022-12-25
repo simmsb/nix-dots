@@ -4,6 +4,7 @@
   nix.package = pkgs.nixVersions.stable;
   nix.settings.cores = 0; # use all cores
   nix.settings.max-jobs = 10; # use all cores
+  security.pam.enableSudoTouchIdAuth = true;
 
   system.defaults = {
     NSGlobalDomain.AppleShowAllExtensions = true;

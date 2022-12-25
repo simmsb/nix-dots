@@ -31,11 +31,21 @@
       overlays = [
         emacs-overlay.overlay
         fenix.overlays.default
+        # (final: prev: {
+        #   nativeClangStdenv =
+        #     prev.stdenvAdapters.impureUseNativeOptimizations
+        #     (prev.stdenvAdapters.withCFlags [ "-O2" "-pipe" ]
+        #       (prev.overrideCC prev.llvmPackages.stdenv
+        #         (prev.wrapCCWith rec {
+        #           cc = prev.llvmPackages.clang-unwrapped;
+        #         })));
+        # })
       ];
 
       genPkgsWithOverlays = system: import nixpkgs {
         inherit system overlays;
         config.allowUnfree = true;
+        # config.replaceStdenv = { pkgs }: pkgs.nativeClangStdenv;
       };
 
       hmConfig = { hm, pkgs, inputs, config, ... }: {
