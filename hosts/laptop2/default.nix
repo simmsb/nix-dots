@@ -2,7 +2,7 @@
 let
   my-emacs = (pkgs.emacsPackagesFor pkgs.emacsGit).withPackages
     (epkgs: [ epkgs.emacsql-sqlite epkgs.vterm epkgs.pdf-tools ]);
-  python = pkgs.python3.withPackages (ppkgs: with ppkgs; [ pipx pip virtualenv ]);
+  python = pkgs.python3.withPackages (ppkgs: with ppkgs; [ pipx pip virtualenv numpy scipy ]);
 in
 {
   environment.systemPackages = with pkgs; [
@@ -32,6 +32,7 @@ in
     gnuradio
     hackrf
     p7zip
+    ffmpeg
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -116,6 +117,7 @@ in
       cargo-expand
       cargo-generate
       cargo-espflash
+      cargo-show-asm
 
       nmap
       du-dust
