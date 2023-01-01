@@ -97,6 +97,7 @@ in
       "ghidra"
       "remoteviewer"
       "sigdigger"
+      "obs"
     ];
 
     taps = [
@@ -131,7 +132,11 @@ in
 
       binwalk
       
+      # nix language server
       nil
+
+      # nix url fetcher
+      nurl
     ];
 
     programs.neovim = {

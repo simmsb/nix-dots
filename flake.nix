@@ -17,9 +17,12 @@
 
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
+
+    nurl_.url = "github:nix-community/nurl";
+    nurl_.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, impermanence, emacs-overlay, darwin, fenix, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, impermanence, emacs-overlay, darwin, fenix, nurl_, ... }:
     let
       lib = nixpkgs.lib.extend (self: super: { my = import ./lib { inherit inputs; lib = self; }; });
 
@@ -31,6 +34,7 @@
       overlays = [
         emacs-overlay.overlay
         fenix.overlays.default
+        (final: prev: {nurl = nurl_.packages."${prev.stdenv.hostPlatform.system}".default;})
         # (final: prev: {
         #   nativeClangStdenv =
         #     prev.stdenvAdapters.impureUseNativeOptimizations
