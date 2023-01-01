@@ -98,6 +98,7 @@ in
       "remoteviewer"
       "sigdigger"
       "obs"
+      "karabiner-elements"
     ];
 
     taps = [
@@ -137,6 +138,8 @@ in
 
       # nix url fetcher
       nurl
+
+      kubectl
     ];
 
     programs.neovim = {
